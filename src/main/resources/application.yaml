@@ -1,0 +1,16 @@
+server:
+  port: 8990
+
+spring:
+  application:
+    name: lenoraisakis
+  datasource:
+    url: jdbc:postgresql://localhost:5432/lenoraisakis
+    username: postgres
+    password: mert123456
+  jpa:
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
