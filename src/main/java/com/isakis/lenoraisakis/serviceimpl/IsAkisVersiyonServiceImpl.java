@@ -1,0 +1,122 @@
+package com.isakis.lenoraisakis.serviceimpl;
+
+import com.isakis.lenoraisakis.dto.ApiResponse;
+import com.isakis.lenoraisakis.dto.isAkisVersion.İsAkisVersionCreateDTO;
+import com.isakis.lenoraisakis.dto.isAkisVersion.İsAkisVersionResponseDTO;
+import com.isakis.lenoraisakis.model.IsAkisVersion;
+import com.isakis.lenoraisakis.model.İsAkisTanim;
+import com.isakis.lenoraisakis.repository.İsAkisTanimRepository;
+import com.isakis.lenoraisakis.repository.İsAkisVersiyonRepository;
+import com.isakis.lenoraisakis.service.IsAkisVersiyonService;
+import com.isakis.lenoraisakis.service.mapper.İsAkisVersionMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class IsAkisVersiyonServiceImpl  implements IsAkisVersiyonService {
+    private İsAkisVersiyonRepository i̇sAkisVersiyonRepository;
+    private İsAkisVersionMapper i̇sAkisVersionMapper;
+    private İsAkisTanimRepository i̇sAkisTanimRepository;
+    public IsAkisVersiyonServiceImpl( İsAkisVersiyonRepository i̇sAkisVersiyonRepository, İsAkisVersionMapper i̇sAkisVersionMapper, İsAkisTanimRepository i̇sAkisTanimRepository) {
+        this.i̇sAkisVersiyonRepository = i̇sAkisVersiyonRepository;
+        this.i̇sAkisVersionMapper = i̇sAkisVersionMapper;
+        this.i̇sAkisTanimRepository = i̇sAkisTanimRepository;
+    }
+
+
+    public ResponseEntity<ApiResponse> getAllIsAkisVersiyonBasedOnIsAkisTanim(String isAkisTanimId) {
+        Optional<İsAkisTanim> ısAkisTanimOptional = i̇sAkisTanimRepository.findById(isAkisTanimId);
+        if ( ısAkisTanimOptional.isEmpty()){
+            return  ResponseEntity.status(409).body(ApiResponse.error("İs Akis Tanim Bulunamamakta", Collections.emptyList(), HttpStatus.CONFLICT));
+        }
+        İsAkisTanim i̇sAkisTanim = ısAkisTanimOptional.get();
+
+        if (i̇sAkisTanim.getİsAkisVersions().isEmpty()){
+            return  ResponseEntity.status(409).body(ApiResponse.error("İs Akis Tanımına dair versiyon listesi boş.", Collections.emptyList(), HttpStatus.CONFLICT));
+        }
+
+        List<İsAkisVersionResponseDTO> isAkisVersionDTOList = i̇sAkisTanim.getİsAkisVersions().stream().map(i̇sAkisVersionMapper::fromİsAkisVersion).toList();
+
+        return ResponseEntity.status(200).body(ApiResponse.success(isAkisVersionDTOList));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> getSingleIsAkisVersiyonBasedOnIsAkisTanim(String isAkisVersionId) {
+        Optional<IsAkisVersion> isAkisVersion = i̇sAkisVersiyonRepository.findById(isAkisVersionId);
+
+        if(isAkisVersion.isEmpty()){
+            return  ResponseEntity.status(409).body(ApiResponse.error("İs Akis Versiyonu bulunamadı.", Collections.emptyList(), HttpStatus.CONFLICT));
+
+        }
+        IsAkisVersion existİsAkisVersion = isAkisVersion.get();
+
+        if (existİsAkisVersion.getIsakistanim().equals(Optional.empty())){
+            return  ResponseEntity.status(409).body(ApiResponse.error("İs Akis Versiyonuna dair is akis tanim bulunamadı.", Collections.emptyList(), HttpStatus.CONFLICT));
+        }
+    return  ResponseEntity.ok(ApiResponse.success(existİsAkisVersion.getIsakistanim()));
+
+}
+
+
+    public ResponseEntity<ApiResponse> createIsAkisiVersion(@RequestBody İsAkisVersionCreateDTO i̇sAkisVersionCreateDTO  , String isAkisTanimId) {
+        Optional<İsAkisTanim> ısAkisTanimOptional = i̇sAkisTanimRepository.findById(isAkisTanimId);
+        if ( ısAkisTanimOptional.isEmpty()){
+            return  ResponseEntity.status(409).body(ApiResponse.error("İs Akis Tanim Bulunamamakta", Collections.emptyList(), HttpStatus.CONFLICT));
+        }
+
+        İsAkisTanim akisTanim = ısAkisTanimOptional.get();
+
+        IsAkisVersion i̇sAkisVersion = new IsAkisVersion();
+        i̇sAkisVersion.setVersion(i̇sAkisVersionCreateDTO.getVersiyon());
+        i̇sAkisVersion.setAciklama(i̇sAkisVersionCreateDTO.getAciklama());
+        i̇sAkisVersion.setOlusturma_zamanı(LocalDateTime.now().toString());
+        i̇sAkisVersion.setOlusturan_oid(i̇sAkisVersionCreateDTO.getOlusturan_oid());
+        i̇sAkisVersion.setAktif(1);
+        i̇sAkisVersion.setIsakistanim(akisTanim);
+
+        ArrayList<IsAkisVersion> isAkisVersionArrayList = new ArrayList<>();
+        isAkisVersionArrayList.add(i̇sAkisVersion);
+
+        akisTanim.setİsAkisVersions(isAkisVersionArrayList);
+        i̇sAkisTanimRepository.save(akisTanim);
+
+        İsAkisVersionResponseDTO ısAkisVersionResponseDTO = new İsAkisVersionResponseDTO();
+        ısAkisVersionResponseDTO.setIsakis_tanim_adi(akisTanim.getAdı());
+        ısAkisVersionResponseDTO.setVersiyon(i̇sAkisVersion.getVersiyon());
+        ısAkisVersionResponseDTO.setAciklama(i̇sAkisVersion.getAciklama());
+        ısAkisVersionResponseDTO.setOlusturma_zamanı(LocalDateTime.now().toString());
+        ısAkisVersionResponseDTO.setCreatorPerson(i̇sAkisVersion.getCreatorPerson());
+        ısAkisVersionResponseDTO.setAktif(i̇sAkisVersion.getAktif());
+
+
+        return  ResponseEntity.ok(ApiResponse.success(ısAkisVersionResponseDTO));
+    }
+
+    @Override
+    public ResponseEntity deleteIsAkisiVersion(String isAkisVersionId, String isAkisTanimId) {
+        Optional<İsAkisTanim> isAkisTanimOptional= i̇sAkisTanimRepository.findById(isAkisTanimId);
+
+        if ( isAkisTanimOptional.isEmpty()){
+            return  ResponseEntity.status(409).body(ApiResponse.error("İs Akis Tanim Bulunamamakta", Collections.emptyList(), HttpStatus.CONFLICT));
+        }
+
+        Optional<IsAkisVersion> isAkisVersionOptional= i̇sAkisVersiyonRepository.findById(isAkisVersionId);
+        if ( isAkisVersionOptional.isEmpty()){
+            return  ResponseEntity.status(409).body(ApiResponse.error("İs Akis Versiyonu Bulunamamakta", Collections.emptyList(), HttpStatus.CONFLICT));
+        }
+
+        i̇sAkisVersiyonRepository.deleteById(isAkisVersionId);
+
+        return  ResponseEntity.ok("Successfully versiyon Deleted");
+    }
+
+
+}
