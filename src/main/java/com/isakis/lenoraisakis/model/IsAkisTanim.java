@@ -6,14 +6,13 @@
 
     import java.util.List;
 
-
     @Entity
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
     @Getter
     @Setter
-    public class İsAkisTanim extends BaseModel {
+    public class IsAkisTanim extends BaseModel {
         private  String adı;
         private  String aciklama;
         private Integer aktif;

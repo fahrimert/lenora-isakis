@@ -22,7 +22,7 @@ public class IsAkisAdim extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "is_akis_tanim_id")
     @JsonIgnore
-    private İsAkisTanim isakistanim; //process definition
+    private IsAkisTanim isakistanim; //process definition
 
 
     //birim tipi diye bişey daha var onun da idsi
@@ -51,6 +51,7 @@ public class IsAkisAdim extends BaseModel {
     //5 parallel gateway diye birşey varmış aynı anda birden fazla akış çıkartıyormuş ortaya bu and logical operatörü yerine geçiyor
     //6 Or lgoical operatörü yerine geçiyorbir veya daha fazla koşula bağı olarak çalışıyor.
     //2 tane daha var şuanlık gerek yok bizim uygulamada end event yok çünkü ona dair mantığı model yapısından çıkartamadım
+    private Integer end;
 
     private Integer turu;
 
@@ -60,6 +61,10 @@ public class IsAkisAdim extends BaseModel {
 
     //sequence flow conditionları
     private String kosul;
+
+    private  Integer X;
+    private  Integer Y;
+
 
 
     //görevi yapacak kişi

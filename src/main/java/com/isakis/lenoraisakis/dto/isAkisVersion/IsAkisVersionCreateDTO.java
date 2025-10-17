@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class İsAkisVersionCreateDTO {
+public class IsAkisVersionCreateDTO {
     private Integer versiyon;
     private String aciklama;
     private String olusturan_oid;

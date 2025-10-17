@@ -39,5 +39,5 @@ public class IsAkisVersion extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "is_akis_version_id")
     @JsonIgnore
-    private İsAkisTanim isakistanim;
+    private IsAkisTanim isakistanim;
 }

@@ -3,11 +3,13 @@ package com.isakis.lenoraisakis.serviceimpl;
 import com.isakis.lenoraisakis.dto.ApiResponse;
 import com.isakis.lenoraisakis.dto.isAkisVersion.IsAkisVersionCreateDTO;
 import com.isakis.lenoraisakis.dto.isAkisVersion.IsAkisVersionResponseDTO;
-import com.isakis.lenoraisakis.model.IsAkisVersion;
 import com.isakis.lenoraisakis.model.IsAkisTanim;
+import com.isakis.lenoraisakis.model.IsAkisVersion;
+import com.isakis.lenoraisakis.repository.IsAkisDurumRepository;
 import com.isakis.lenoraisakis.repository.IsAkisTanimRepository;
 import com.isakis.lenoraisakis.repository.İsAkisVersiyonRepository;
 import com.isakis.lenoraisakis.service.IsAkisVersiyonService;
+import com.isakis.lenoraisakis.service.IsAkısDurumService;
 import com.isakis.lenoraisakis.service.mapper.İsAkisVersionMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class IsAkisVersiyonServiceImpl  implements IsAkisVersiyonService {
-    private İsAkisVersiyonRepository i̇sAkisVersiyonRepository;
+public class IsAkisDurumServiceImpl implements IsAkısDurumService {
+    private IsAkisDurumRepository isAkisDurumRepository;
     private İsAkisVersionMapper i̇sAkisVersionMapper;
     private IsAkisTanimRepository i̇sAkisTanimRepository;
-    public IsAkisVersiyonServiceImpl( İsAkisVersiyonRepository i̇sAkisVersiyonRepository, İsAkisVersionMapper i̇sAkisVersionMapper, IsAkisTanimRepository i̇sAkisTanimRepository) {
+    public IsAkisDurumServiceImpl(İsAkisVersiyonRepository i̇sAkisVersiyonRepository, İsAkisVersionMapper i̇sAkisVersionMapper, IsAkisTanimRepository i̇sAkisTanimRepository) {
         this.i̇sAkisVersiyonRepository = i̇sAkisVersiyonRepository;
         this.i̇sAkisVersionMapper = i̇sAkisVersionMapper;
         this.i̇sAkisTanimRepository = i̇sAkisTanimRepository;
@@ -119,27 +121,5 @@ public class IsAkisVersiyonServiceImpl  implements IsAkisVersiyonService {
         return  ResponseEntity.ok("Successfully versiyon Deleted");
     }
 
-    @Override
-    public ResponseEntity<ApiResponse> updateIsAkisVersiyon(String isAkisVersionIdUpdated, String isAkisTanimId) {
-        Optional<IsAkisTanim> isAkisTanimOptional= i̇sAkisTanimRepository.findById(isAkisTanimId);
 
-        if ( isAkisTanimOptional.isEmpty()){
-            return  ResponseEntity.status(409).body(ApiResponse.error("İs Akis Tanim Bulunamamakta", Collections.emptyList(), HttpStatus.CONFLICT));
-        }
-
-        IsAkisTanim isAkisTanimExists= isAkisTanimOptional.get();
-
-
-        Optional<IsAkisVersion> isAkisVersionOptional= i̇sAkisVersiyonRepository.findById(isAkisVersionIdUpdated);
-
-
-        if ( isAkisVersionOptional.isEmpty()){
-            return  ResponseEntity.status(409).body(ApiResponse.error("İs Akis Versiyon Bulunamamakta", Collections.emptyList(), HttpStatus.CONFLICT));
-        }
-        IsAkisVersion isAkisVersionExists = isAkisVersionOptional.get();
-
-        isAkisTanimExists.setAktif_isakis_versiyon_oid(isAkisVersionExists.getOid());
-
-        return  ResponseEntity.ok(ApiResponse.success("Version Successfully Updated"));
-    }
 }

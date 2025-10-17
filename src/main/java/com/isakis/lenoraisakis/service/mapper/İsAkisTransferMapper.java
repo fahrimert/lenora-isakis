@@ -1,7 +1,6 @@
 package com.isakis.lenoraisakis.service.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.isakis.lenoraisakis.dto.isAkisAdim.İsAkisAdimResponseDTO;
 import com.isakis.lenoraisakis.model.IsAkisAdim;
 import com.isakis.lenoraisakis.model.IsAkisTransfer;
 import jakarta.validation.Valid;

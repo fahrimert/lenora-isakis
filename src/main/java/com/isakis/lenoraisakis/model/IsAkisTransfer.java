@@ -22,6 +22,9 @@ public class IsAkisTransfer extends BaseModel {
     @Column(name = "komut", length = 500)
     private String komut;
 
+
+    //sequence flow conditionlu 1
+    //sequence flow conditionsuz 0
     private  Integer turu;
 
     @Column(name = "AKTIF_ISAKIS_VERSION_OID", length = 100)
@@ -38,7 +41,7 @@ public class IsAkisTransfer extends BaseModel {
     @Column(name = "aciklama")
     private String aciklama;
 
-    private  Integer sıra;
+//    private  Integer sıra;
 
     @Column(name = "hedef_ad_aciklama")
     private String hedef_ad_aciklama;
@@ -62,6 +65,6 @@ public class IsAkisTransfer extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "is_akis_tanim_oid")
     @JsonIgnore
-    private İsAkisTanim isAkisTanim;
+    private IsAkisTanim isAkisTanim;
 
 }

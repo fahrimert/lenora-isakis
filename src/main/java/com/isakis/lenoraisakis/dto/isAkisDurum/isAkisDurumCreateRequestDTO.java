@@ -1,4 +1,5 @@
-package com.isakis.lenoraisakis.dto.isAkisTanim;
+package com.isakis.lenoraisakis.dto.isAkisDurum;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class İsAkisTanimCreateRequestDTO {
-    private String adı;
-    private String aciklama;
+public class isAkisDurumCreateRequestDTO {
+
 }

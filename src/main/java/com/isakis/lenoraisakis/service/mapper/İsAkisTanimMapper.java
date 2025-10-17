@@ -1,8 +1,8 @@
 package com.isakis.lenoraisakis.service.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.isakis.lenoraisakis.dto.isAkisTanim.İsAkisTanimResponseDTO;
-import com.isakis.lenoraisakis.model.İsAkisTanim;
+import com.isakis.lenoraisakis.dto.isAkisTanim.IsAkisTanimResponseDTO;
+import com.isakis.lenoraisakis.model.IsAkisTanim;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +16,8 @@ public class İsAkisTanimMapper {
         this.objectMapper = objectMapper;
     }
 
-    public İsAkisTanimResponseDTO fromİsAkisTanim(@Valid İsAkisTanim isAkisTanim){
-        İsAkisTanimResponseDTO i̇sAkisTanimResponseDTO = new İsAkisTanimResponseDTO();
+    public IsAkisTanimResponseDTO fromİsAkisTanim(@Valid IsAkisTanim isAkisTanim){
+        IsAkisTanimResponseDTO i̇sAkisTanimResponseDTO = new IsAkisTanimResponseDTO();
         i̇sAkisTanimResponseDTO.setAdı(isAkisTanim.getAdı());
         i̇sAkisTanimResponseDTO.setAciklama(isAkisTanim.getAciklama());
         i̇sAkisTanimResponseDTO.setCreatorPerson(isAkisTanim.getCreatorPerson());

@@ -8,13 +8,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 
-public class İsAkisVersionMapper {
+public class isAkisDurumMapper {
 
     private  final ObjectMapper objectMapper;
 
-    public İsAkisVersionMapper(ObjectMapper objectMapper) {
+    public isAkisDurumMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
+
 
     public IsAkisVersionResponseDTO fromİsAkisVersion(@Valid IsAkisVersion isAkisVersion){
         IsAkisVersionResponseDTO i̇sAkisVersionResponseDTO = new IsAkisVersionResponseDTO();

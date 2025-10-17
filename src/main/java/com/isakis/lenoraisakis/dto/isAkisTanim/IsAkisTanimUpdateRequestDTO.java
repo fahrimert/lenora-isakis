@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class İsAkisTanimUpdateRequestDTO {
+public class IsAkisTanimUpdateRequestDTO {
     private String adı;
     private String aciklama;
     private String aktif_isakis_versiyon_oid;

@@ -1,5 +1,6 @@
 package com.isakis.lenoraisakis.repository;
 
+import com.isakis.lenoraisakis.model.IsAkisAdim;
 import com.isakis.lenoraisakis.model.IsAkisTransfer;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,8 @@ import java.util.Optional;
 
 @Repository
 public interface İsAkisTransferRepository extends JpaRepository<IsAkisTransfer,String> {
-
+    @Query  (value = "SELECT * FROM is_akis_transfer ORDER BY sıra DESC LIMIT 1", nativeQuery = true)
+    Optional<IsAkisTransfer> getMaxSiraİsAkisTransfer();
 
     @Query  (value =
             """
@@ -28,9 +30,9 @@ public interface İsAkisTransferRepository extends JpaRepository<IsAkisTransfer,
     boolean existBySourceAndTargetId(String oid, String oid1);
 
     @Query(value = """
-    SELECT * 
-    FROM is_akis_transfer 
-    WHERE isakis_adim_no = :adimNoGeri 
+    SELECT *
+    FROM is_akis_transfer
+    WHERE isakis_adim_no = :adimNoGeri
       AND sonraki_isakis_adim_no = :adimNoReferans
     """, nativeQuery = true)
     IsAkisTransfer findByKaynakOidAndReferansNo(@Param("adimNoGeri")  Integer adimNoGeri,
@@ -38,13 +40,22 @@ public interface İsAkisTransferRepository extends JpaRepository<IsAkisTransfer,
                                                 @Param("adimNoReferans")  Integer adimNoReferans);
 
     @Query(value = """
-    SELECT * 
-    FROM is_akis_transfer 
-    WHERE kaynak_oid = :kaynakAdimOid 
+    SELECT *
+    FROM is_akis_transfer
+    WHERE kaynak_oid = :kaynakAdimOid
     """, nativeQuery = true)
     List<IsAkisTransfer> findAllByKaynakOid(@Param("kaynakAdimOid")  String kaynakAdimOid);
 
 
+    @Modifying
+    @Transactional
+    @Query(value = """
+DELETE FROM is_akis_transfer
+WHERE is_akis_tanim_oid = :isAkisTanimOid
+    """, nativeQuery = true)
+    void deleteAllByIsAkisTanimOid(@Param("isAkisTanimOid") String isAkisTanimOid);
+
+    IsAkisTransfer findBySıra(int i);
 
     @Modifying
     @Transactional
@@ -58,25 +69,13 @@ public interface İsAkisTransferRepository extends JpaRepository<IsAkisTransfer,
     @Transactional
     @Query(value = """
     DELETE FROM is_akis_transfer
-    WHERE kaynak_adim_oid = :oid
+    WHERE kaynak_adim_oid = :adimOid
     """, nativeQuery = true)
     void deleteAllByIsKaynakAdimOid(String oid);
 
     Optional<IsAkisTransfer> findByOid(String isAkisTransferOid);
 
-    @Modifying
-    @Transactional
-    @Query(value = """
-    DELETE FROM is_akis_transfer
-    WHERE hedef_adim_oid = :oid
-    """, nativeQuery = true)
-    void deleteAllByIsHedefAdimOid(String oid);
 
-    @Modifying
-    @Transactional
-    @Query(value = """
-              DELETE FROM is_akis_transfer WHERE isAkisTanim.is_akis_tanim_oid = :isAkisTanimOid"""
-  , nativeQuery = true)
-    void deleteAllByIsAkisTanimOid(String isAkisTanimOid);
+
 }
 

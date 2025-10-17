@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class İsAkisVersionResponseDTO {
+public class IsAkisVersionResponseDTO {
     private String isakis_tanim_adi;
     private  Integer versiyon;
     private String aciklama;

@@ -1,5 +1,6 @@
 package com.isakis.lenoraisakis.dto.isAkisAdim;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,12 +10,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class İsAkisAdimCreateDTO {
-    private String adı;
+public class IsAkisAdimKosulRequestDTO {
+
+    private String kosul;
+    private String eklenti;
     private String aciklama;
-    private String birim_tipi_oid;
-    private String birim_oid;
-    private Integer turu;
+    private String kaynakAdimOid;
+    private  String hedefAdimOid;
 
 
 }
+
